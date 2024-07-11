@@ -23,9 +23,6 @@
 #include <linux/cdrom.h>
 #include <linux/sched.h>
 #include <linux/async.h>
-#ifdef CONFIG_ATA_LEDS
-#include <linux/leds.h>
-#endif
 
 /*
  * Define if arch has non-standard setup.  This is a _PCI_ standard
@@ -878,12 +875,6 @@ struct ata_port {
 #ifdef CONFIG_ATA_ACPI
 	struct ata_acpi_gtm	__acpi_init_gtm; /* use ata_acpi_init_gtm() */
 #endif
-
-#ifdef CONFIG_ATA_LEDS
-	struct led_trigger	*ledtrig;
-	char			ledtrig_name[8];
-#endif
-
 	/* owned by EH */
 	u8			*ncq_sense_buf;
 	u8			sector_buf[ATA_SECT_SIZE] ____cacheline_aligned;
@@ -1251,6 +1242,7 @@ extern int ata_slave_link_init(struct ata_port *ap);
 extern struct ata_port *ata_sas_port_alloc(struct ata_host *,
 					   struct ata_port_info *, struct Scsi_Host *);
 extern void ata_port_probe(struct ata_port *ap);
+extern void ata_port_free(struct ata_port *ap);
 extern int ata_sas_tport_add(struct device *parent, struct ata_port *ap);
 extern void ata_sas_tport_delete(struct ata_port *ap);
 extern int ata_sas_slave_configure(struct scsi_device *, struct ata_port *);
